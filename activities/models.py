@@ -16,11 +16,11 @@ class Activity(models.Model):
         TEN = 9, "Tenis"
         BOK = 10, "Boks"
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activity')
-    type = models.PositiveSmallIntegerField(choices=ATypes.choices, default=3)
-    duration_time = models.FloatField()
-    date = models.DateField()
-    created_at_date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activity', null=True)
+    type = models.PositiveSmallIntegerField(choices=ATypes.choices, default=3, null=True)
+    duration_time = models.FloatField(null=True)
+    date = models.DateField(null=True)
+    created_at_date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f'Aktywność {self.id} - {self.get_type_display} - {self.date.strftime("%Y/%m/%d")}'

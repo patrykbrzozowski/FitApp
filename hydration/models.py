@@ -11,10 +11,10 @@ class Water(models.Model):
         BUT0_5 = 4, "BUTELKA 0,5 L"
         BUT1 = 5, "BUTELKA 1 L"
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='water')
-    value = models.PositiveSmallIntegerField(choices=WTypes.choices)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='water', null=True)
+    value = models.PositiveSmallIntegerField(choices=WTypes.choices, null=True)
     real_value = models.IntegerField(null=True)
-    date = models.DateTimeField()
+    date = models.DateTimeField(null=True)
     created_at_date = models.DateTimeField(auto_now_add=True)
     created_at_time = models.TimeField(auto_now_add=True)
 
