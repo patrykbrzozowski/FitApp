@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Heading -->
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <p class="alert{% if message.tags == 'info' %} alert-info{% endif %}">
+    {{ message }}
+  </p>
+  {% endfor %}
+</ul>
+{% endif %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Dzień Dobry, {{ user.first_name }}</h1>
+</div>
+
+<!-- Content Row -->
+<div class="row">
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-primary text-uppercase mb-1"
+            >
+              Ilość wypitej wody (dzisiaj)
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{ sum_of_water_today|floatformat }} l / 2 l
+            </div>
+            <div
+              class="small{% if width_of_water_bar == 100.0 %} text-success{% else %} text-black-50{% endif %}"
+            >
+              Cel : 2 l
+            </div>
+            <div class="progress progress-sm mr-2 mt-4">
+              <div
+                class="progress-bar bg-primary"
+                role="progressbar"
+                style="width: {{width_of_water_bar}}%"
+                aria-valuenow="50"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-hand-holding-water fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-danger text-uppercase mb-1"
+            >
+              Ilość aktywności fizycznej w minutach (dzisiaj)
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{ sum_of_activities_today }} minut
+            </div>
+            <div
+              class="small{% if width_of_activities_bar == 100.0 %} text-success{% else %} text-black-50{% endif %}"
+            >
+              Cel : 60 minut
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-dumbbell fa-2x text-gray-300"></i>
+          </div>
+        </div>
+        <div class="col">
+          <div class="progress progress-sm mr-2 mt-1">
+            <div
+              class="progress-bar bg-danger"
+              role="progressbar"
+              style="width: {{width_of_activities_bar}}%"
+              aria-valuenow="50"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+              Ilość snu dzisiaj
+            </div>
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                  {{ sum_of_sleep_today | floatformat }} godzin
+                </div>
+                <div
+                  class="small{% if width_of_sleep_bar == 100.0 %} text-success{% else %} text-black-50{% endif %}"
+                >
+                  Cel : 8 godzin
+                </div>
+                <div class="progress progress-sm mr-2 mt-3">
+                  <div
+                    class="progress-bar bg-info"
+                    role="progressbar"
+                    style="width: {{width_of_sleep_bar}}%"
+                    aria-valuenow="50"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-bed fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div
+              class="text-xs font-weight-bold text-warning text-uppercase mb-1"
+            >
+              Obecna Waga
+            </div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{ current_weight }} kg
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-weight fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Content Row -->
+<div class="row">
+  <!-- Content Column -->
+  <div class="col-lg-6 mb-4">
+    <!-- Illustrations -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Podsumowanie</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-4 mr-0">
+            <div class="col-24 mb-4">
+              <div class="bg-gradient-custom card shadow h-100 py-2">
+                <div class="card-body mx-auto">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-3">
+                      <div
+                        class="text-xs font-weight-bold text-gray-200 text-uppercase mb-1"
+                      >
+                        BMI
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-200">
+                        {{ current_BMI|floatformat }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-24 mb-4">
+              <div class="bg-gradient-custom card shadow h-100 py-2">
+                <div class="card-body mx-auto">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-3">
+                      <div
+                        class="text-xs font-weight-bold text-gray-200 text-uppercase mb-1"
+                      >
+                        WAGA
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-200">
+                        {{ current_weight|floatformat }} kg
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-24 mb-4">
+              <div class="bg-gradient-custom card shadow h-100 py-2">
+                <div class="card-body mx-auto">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-3">
+                      <div
+                        class="text-xs font-weight-bold text-gray-200 text-uppercase mb-1"
+                      >
+                        WZROST
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-200">
+                        {{ current_height|floatformat }} cm
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-8 mr-0">
+            <img
+              src="{% static 'img/person.png' %}"
+              class="rounded mx-auto d-block"
+              alt="..."
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 mb-4 h-100">
+    <!-- Illustrations -->
+    <div class="card shadow h-100 mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Cele na dzisiaj</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 mr-0">
+            <div class="col-24 my-4">
+              <div class="bg-gradient-custom card shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters">
+                    <div class="col mr-3">
+                      <div
+                        class="text-md font-weight-bold text-gray-200 text-uppercase mb-1"
+                      >
+                        {% if width_of_water_bar == 100.0 %}
+                        <s>Wypić 2 litry wody.</s>
+                        {% else %}
+                        Wypić 2 litry wody.
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-24 my-4">
+              <div class="bg-gradient-custom card shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters">
+                    <div class="col mr-3">
+                      <div
+                        class="text-md font-weight-bold text-gray-200 text-uppercase mb-1"
+                      >
+                        {% if width_of_activities_bar == 100.0 %}
+                        <s>Spędzić aktywnie 60 minut w ciągu dnia.</s>
+                        {% else %}
+                        Spędzić aktywnie 60 minut w ciągu dnia.
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-24 my-4">
+              <div class="bg-gradient-custom card shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters">
+                    <div class="col mr-3">
+                      <div
+                        class="text-md font-weight-bold text-gray-200 text-uppercase mb-1"
+                      >
+                        {% if width_of_sleep_bar == 100.0 %}
+                        <s>Spać 8 godzin.</s>
+                        {% else %}
+                        Spać 8 godzin.
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Content Row -->
+<div class="row">
+  <!-- Content Column -->
+  <div class="col-lg-12 mb-4">
+    <!-- Illustrations -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">O aplikacji</h6>
+      </div>
+      <div class="card-body">
+        <p>
+          FitApp pomoże Ci zadbać o zdrowe nawyki, które są niezwykle ważne. Aplikacja pozwoli zmaksymalizować Twoje wyniki i usystematyczni nawyki. Zadaniem FitApp jest pomoc użytkownikowi w utrzymaniu zdrowego trybu życia. Aplikacja codziennie poinformuje o dzeinnych celach do zaliczenia. FitApp umożliwia śledzenie swoich pomiarów ciała, ilości snu czy aktywności fizycznej w ciągu dnia.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 
+
+{% block js %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+{% endblock %}

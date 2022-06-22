@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <h1>Dodaj pomiary ciała</h1>
+        <form method="post">{% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="Dodaj">
+        </form>
+        
+      </div>
+    </div>
+{% endblock %}

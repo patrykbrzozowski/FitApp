@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+          {% if messages %}
+          <ul class="messages">
+          {% for message in messages %}
+            <p class=" ml-0 font-weight-bold {% if message.tags == 'error' %}text-danger {% elif message.tags == 'success' %}text-success {% endif %}">{{ message }} </p>
+          {% endfor %}
+          </ul>
+          {% endif %}
+
+            <h1>{{ list_what }}</h1>
+            <!-- {% if list_what == 'Pomiary ciała' %}
+            <a href="{% url 'body_measurements:body_circuits_list' %}" class="btn btn-dark my-3">Pokaz Obwody ciała</a>
+
+            {% else %}
+            <a href="{% url 'body_measurements:body_measurements_list' %}" class="btn btn-dark my-3">Pokaz Pomiary ciała</a>
+
+            {% endif %} -->
+            <div class="dropdown my-4">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ list_what }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% if list_what == 'Pomiary ciała' %}
+                <a href="{% url 'body_measurements:body_circuits_list' %}" class="dropdown-item">Obwody ciała</a>
+                {% else %}
+                <a href="{% url 'body_measurements:body_measurements_list' %}" class="dropdown-item">Pomiary ciała</a>
+                {% endif %}
+              </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Table-->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+
+            {% if object_list %}
+                <table id="list-table" class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        {% if list_what == 'Pomiary ciała' %}
+                          <th scope="col">Waga</th>
+                          <th scope="col">Wzrost</th>
+                        {% else %}
+                          <th scope="col">Szyja</th>
+                          <th scope="col">Biodra</th>
+                          <th scope="col">Klatka piersiowa</th>
+                          <th scope="col">Biceps</th>
+                          <th scope="col">Udo</th>
+                          <th scope="col">Talia</th>
+                          <th scope="col">Łydka</th>
+                          <th scope="col">Brzuch</th>
+                        {% endif %}
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    {% for object in object_list %}
+                        <tr>
+                            <td>{{ object.date|date:"Y/m/d" }}</td>
+                            {% if list_what == 'Pomiary ciała' %}
+                              <td>{{ object.weight|floatformat }}</td>
+                              <td>{{ object.height|floatformat }}</td>
+                            {% else %}
+                              <td>{{ object.neck }}</td>
+                              <td>{{ object.hips }}</td>
+                              <td>{{ object.chest }}</td>
+                              <td>{{ object.thigh }}</td>
+                              <td>{{ object.waist }}</td>
+                              <td>{{ object.calf }}</td>
+                              <td>{{ object.belly }}</td>
+                            {% endif %}
+                            <td>
+                                {% if list_what == 'Pomiary ciała' %}
+                                    <a href="{% url 'body_measurements:body_measurements_detail' object.pk %}">
+                                {% else %}
+                                    <a href="{% url 'body_measurements:body_circuits_detail' object.pk %}">
+                                {% endif %}
+                                <i class="fas fa-search-plus"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+              {% if list_what == 'Pomiary ciała' %}
+                Nie dodano jeszcze żadnych pomiarów ciała
+              {% else %}
+              Nie dodano jeszcze żadnych obwodów ciała
+              {% endif %}
+                
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+          console.log(document.location.href)
+            $('#list-table').DataTable(
+                {
+                    order: [[0, "desc"]],
+                    columns: [
+                        {name: "Data", orderable: true},
+                        {% if list_what == 'Pomiary ciała' %}
+                          {name: "Waga", orderable: true},
+                          {name: "Wzrost", orderable: true},
+                        {% else %}
+                          {name: "Szyja", orderable: true},
+                          {name: "Biodra", orderable: true},
+                          {name: "Klatka piersiowa", orderable: true},
+                          {name: "Biceps", orderable: true},
+                          {name: "Udo", orderable: true},
+                          {name: "Talia", orderable: true},
+                          {name: "Łydka", orderable: true},
+                          {name: "Brzuch", orderable: true},
+                        {% endif %}
+                          {name: "Szczegóły", orderable: false},
+                    ]
+                }
+            );
+
+           
+        })
+    </script>
+{% endblock %}

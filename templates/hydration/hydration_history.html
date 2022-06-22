@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1 class="mb-5" style="text-align: center;">Wykres Nawodnienia z ostatnich 14 dni ({{ first_date_of_14_days | date:"d/m" }} - {{ last_date_of_14_days | date:"d/m" }})</h1>
+<!-- Visuals -->
+<div class="row">
+  <div id="visuals-container" class="col-lg-8 mx-auto">
+    <canvas class="mb-3" width="300" height="200" id="myChart"></canvas>
+    <div id="chart2"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+
+
+    let myChart = document.getElementById('myChart').getContext('2d');
+
+    let massPopChart = new Chart(myChart, {
+        type: 'bar',
+        data:{
+          labels: [{% for item in date_last14 %}'{{ item | date:"d/m/y" }}',{% endfor %}],
+            datasets:[{
+                label: 'Woda w ml.',
+                data:[{% for item in data %}{{item}},{% endfor %}],
+                backgroundColor: 'rgba(102, 255, 255, 0.5)'
+            }]
+        }
+    })
+})
+</script>
+{% endblock %}

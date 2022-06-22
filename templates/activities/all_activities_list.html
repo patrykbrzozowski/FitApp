@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-xl-9">
+        <h1 class="mb-5 text-primary">Historia aktywnośći fizycznej</h1>
+        <ul class="p-0">
+          
+          {% for date, sum in zipped_data %}
+                <h2 class="mb-3 mt-2 p-0 ml-0">Aktywność w dniu {{ date|date:"d/m/y" }}</h2>
+                {% for object in all_activities %}
+                  {% if object.date == date %}
+                    <p>
+                        {% if object.duration_time == 1 %}
+                          {{ object.get_type_display  }} - {{ object.duration_time }} minuta - {{ object.date|date:"d/m/y" }}
+                        {% elif object.duration_time >= 2 and object.duration_time <= 4  %}
+                          {{ object.get_type_display  }} - {{ object.duration_time }} minuty - {{ object.date|date:"d/m/y" }}
+                        {% else %}
+                          {{ object.get_type_display  }} - {{ object.duration_time }} minut - {{ object.date|date:"d/m/y" }}
+                        {% endif %}
+                        
+                    </p>
+                  {% endif %}
+                {% endfor %}
+                <p class="text-primary">Łącznie spędzono aktywnie {{ sum }} minut </p>
+          {% endfor %}
+        </ul>
+        
+      </div>
+    </div>
+{% endblock %}

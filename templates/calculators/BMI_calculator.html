@@ -1,0 +1,96 @@
+{% extends 'base.html' %} 
+
+{% load static %} 
+
+{% block content %}
+<!-- Page Heading -->
+<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+  
+  <div class="row justify-content-center"> -->
+
+<div class="col-lg-8 col-xl-7">
+  <h1 class="h3 mb-5 text-gray-800">Kalkulator BMI!</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <!-- Weight input-->
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        id="weight"
+        name="weight"
+        type="number"
+        placeholder="Podaj swoją wagę w kg..."
+        required="required"
+      />
+      <label for="weight">Waga</label>
+    </div>
+
+    <!-- Height input-->
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        id="height"
+        name="height"
+        type="number"
+        placeholder="Podaj swój wzrost w cm..."
+        required="required"
+      />
+      <label for="height">Wzrost</label>
+    </div>
+
+    {% if user %}
+    <div class="form-check my-3">
+      <input
+        class="form-check-input"
+        checked="checked"
+        name="save"
+        value="on"
+        type="checkbox"
+      />
+      <label for="" class="form-check-label"
+        >Zapisz swoje BMI
+        <a
+          href="#"
+          title="Dlaczego zapisać BMI?"
+          data-toggle="popover"
+          data-trigger="focus"
+          data-content="Jeśli chcesz śledzić swoje BMI, możesz je zapisać. (Wymagane logowanie!)"
+          >?</a
+        >
+      </label>
+    </div>
+      {% endif %}
+    <button
+      type="submit"
+      class="btn btn-primary"
+      action="{% url 'calculators:BMI_calculator' %}"
+    >
+      Oblicz
+    </button>
+
+    <!-- Submit Button-->
+    <!-- <button class="btn btn-primary btn-xl" id="upload" type="submit">
+          Upload
+        </button> -->
+  </form>
+  {% if bmi %}
+  <div class="col-md-20 col-sm-12 col-xs-12 mt-4">
+    <h2>Twój wskaźnik masy ciała wynosi:</h2>
+    <h2 class="{% if bmi > 18.5 and bmi < 24.99 %}text-success{% elif bmi > 25 and bmi < 29.99 %}text-warning {% else %}text-danger {% endif %}">{{ bmi }}</h2>
+    <h2>Twoje BMI wskazuje na:</h2>
+    <h2 class="{% if bmi > 18.5 and bmi < 24.99 %}text-success{% elif bmi > 25 and bmi < 29.99 %}text-warning {% else %}text-danger {% endif %}">{{ state }}</h2>
+    <div class="progress">
+        <div class="progress-bar bg-danger" style="width:25%">Niedowaga</div>
+        <div class="progress-bar bg-success" style="width:25%">Waga prawidłowa</div>
+        <div class="progress-bar bg-warning" style="width:25%">Nadwaga</div>
+        <div class="progress-bar bg-danger" style="width:25%">Otyłość</div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<!-- </div>
+</div> -->
+
+{% endblock %} 
+{% block hidden_content %} 
+{% endblock %}

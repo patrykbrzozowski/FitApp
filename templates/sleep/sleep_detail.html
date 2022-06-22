@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <h1>Sen {{ object.date | date:"d/m/y" }}</h1>
+        <ul>
+            <li>Data: {{ object.date|date:"d/m/y" }}</li>
+            <li>Długość snu: {{ object.duration_time }} godzin</li>
+            
+        </ul>
+        
+          <a href="{% url 'sleep:sleep_delete' object.pk %}" class="btn btn-dark">Usuń</a>
+        
+      </div>
+    </div>
+{% endblock %}

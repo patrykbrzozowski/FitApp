@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        {% if messages %}
+          <ul class="messages">
+          {% for message in messages %}
+            <p class=" ml-0 font-weight-bold {% if message.tags == 'error' %}text-danger {% elif message.tags == 'success' %}text-success {% endif %}">{{ message }} </p>
+          {% endfor %}
+          </ul>
+        {% endif %}
+        <h1>{{ detail_what }} {{ object.date | date:"d/m/y" }}</h1>
+        <ul>
+          {% if detail_what == 'Pomiary ciała' %}
+            <li>Data: {{ object.date|date:"d/m/y" }}</li>
+            <li>Waga: {{ object.weight|floatformat }} kg</li>
+            <li>Wzrost: {{ object.height|floatformat }} cm</li>
+          {% else %}
+          <li>Data: {{ object.date|date:"d/m/y" }}</li>
+          <li>Klatka piersiowa: {{ object.chest|floatformat }} kg</li>
+          <li>Bicpes: {{ object.biceps|floatformat }} cm</li>
+          {% endif %}
+        </ul>
+          {% if detail_what == 'Pomiary ciała' %}
+          <a href="{% url 'body_measurements:body_measurements_delete' object.pk %}" class="btn btn-dark">Usuń</a>
+          <a href="{% url 'body_measurements:body_measurements_update' object.pk %}" class="btn btn-dark">Edytuj</a>
+          {% else %}
+          <a href="{% url 'body_measurements:body_circuits_delete' object.pk %}" class="btn btn-dark">Usuń</a>
+          <a href="{% url 'body_measurements:body_circuits_update' object.pk %}" class="btn btn-dark">Edytuj</a>
+          {% endif %}
+        
+      </div>
+    </div>
+{% endblock %}

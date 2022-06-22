@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <h1>{{ object.get_type_display }} {{ object.date | date:"d/m/y" }}</h1>
+        <ul>
+            <li>Data: {{ object.date|date:"d/m/y" }}</li>
+            <li>Rodzaj aktywnośći: {{ object.get_type_display }}</li>
+            <li>Czas trwania w minutach: {{ object.duration_time }}</li>
+            
+        </ul>
+        
+          <a href="{% url 'activities:activities_delete' object.pk %}" class="btn btn-dark">Usuń</a>
+        
+      </div>
+    </div>
+{% endblock %}

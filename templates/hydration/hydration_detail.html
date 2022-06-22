@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <h1>Woda {{ object.created_at_time | time:"H:i" }}</h1>
+        <ul>
+            <li>Data: {{ object.date|date:"d/m/y" }}</li>
+            <li>Wartość: {{ object.get_value_display }}</li>
+            
+        </ul>
+        
+          <a href="{% url 'hydration:water_delete' object.pk %}" class="btn btn-dark">Usuń</a>
+        
+      </div>
+    </div>
+{% endblock %}

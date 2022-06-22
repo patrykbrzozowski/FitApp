@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class=" row justify-content-center">
+      <div class="col-lg-8 col-xl-10">
+        {% if messages %}
+          <ul class="messages">
+          {% for message in messages %}
+            <p class=" ml-0 font-weight-bold {% if message.tags == 'error' %}text-danger {% elif message.tags == 'success' %}text-success {% endif %}">{{ message }} </p>
+          {% endfor %}
+          </ul>
+        {% endif %}
+        <h1 class="font-weight-bold mb-3">Sen</h1>
+        <ul class="p-0">
+          {% for object in object_list %}
+            <a href="{% url 'sleep:sleep_detail' object.pk %}">
+            <h3>{{ object.date | date:"d/m/y" }} - <span class="text-secondary">{{ object.duration_time|floatformat }} godzin snu</span></h3>
+            </a>
+          {% empty %}
+            <li>Nie dodano jeszcze żadnego snu.</li>
+          {% endfor %}
+        </ul>
+        
+      </div>
+    </div>
+{% endblock %}

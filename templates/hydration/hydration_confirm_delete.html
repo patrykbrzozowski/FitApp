@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <h1>Woda {{ object.created_at_time | time:"H:i" }}</h1>
+        
+        <form method="post">{% csrf_token %}
+          <p>Na pewno usunąć "{{ object }}"?</p>
+          {{ form }}
+          <input type="submit" value="Potwierdź">
+        </form>
+        
+      </div>
+    </div>
+{% endblock %}

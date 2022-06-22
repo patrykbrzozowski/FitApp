@@ -1,0 +1,97 @@
+{% extends 'base.html' %} 
+
+{% load static %} 
+
+{% block content %}
+<!-- Page Heading -->
+<!-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+  
+  <div class="row justify-content-center"> -->
+
+<div class="col-lg-8 col-xl-7">
+  <h1 class="h3 mb-5 text-gray-800">Kalkulator BMR!</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <!-- Weight input-->
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        id="weight"
+        name="weight"
+        type="number"
+        placeholder="Podaj swoją wagę w kg..."
+        required="required"
+      />
+      <label for="weight">Waga</label>
+    </div>
+
+    <!-- Height input-->
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        id="height"
+        name="height"
+        type="number"
+        placeholder="Podaj swój wzrost w cm..."
+        required="required"
+      />
+      <label for="height">Wzrost</label>
+    </div>
+
+    <!-- Age input-->
+    <div class="form-floating mb-3">
+      <input
+        class="form-control"
+        id="age"
+        name="age"
+        type="number"
+        placeholder="Podaj swój wiek..."
+        required="required"
+      />
+      <label for="age">Wiek</label>
+    </div>
+
+    <div class="form-check my-3">
+
+      <input
+        class="form-check-input"
+        checked="checked"
+        name="gender"
+        value="K"
+        type="radio"
+      />
+      <label for="" class="form-check-label">Kobieta</label>
+      <input
+        class="form-check-input ml-4"
+        name="gender"
+        value="M"
+        type="radio"
+      />
+      <label for="" class="form-check-label ml-5">Mężczyzna</label>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      action="{% url 'calculators:BMI_calculator' %}"
+    >
+      Oblicz
+    </button>
+
+    <!-- Submit Button-->
+    <!-- <button class="btn btn-primary btn-xl" id="upload" type="submit">
+          Upload
+        </button> -->
+  </form>
+  {% if bmr %}
+  <div class="col-md-20 col-sm-12 col-xs-12 mt-4">
+    <h2>Twoja podstwawowa przemiana materii wynosi:</h2>
+    <h1 class="display-2 text-primary">{{ bmr }} <span class="display-4 text-primary">kcal</span></h1>
+  </div>
+  {% endif %}
+</div>
+<!-- </div>
+</div> -->
+
+{% endblock %} 
+{% block hidden_content %} 
+{% endblock %}

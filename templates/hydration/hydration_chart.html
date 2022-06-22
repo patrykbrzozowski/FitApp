@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1 class="mb-5" style="text-align: center;">Wykres Nawodnienia w dniu {{ today | date:"d/m/y" }}</h1>
+<!-- Visuals -->
+<div class="row">
+  <div id="visuals-container" class="col-lg-8 mx-auto">
+    <canvas class="mb-3" width="300" height="200" id="myChart"></canvas>
+    <div id="chart2"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+
+
+    let myChart = document.getElementById('myChart').getContext('2d');
+
+    let scales = {
+        xAxes : [{
+          stacked: true,
+        }],
+        yAxes: [{
+          stacked: true,
+          ticks: {
+            suggestedMin: 0,
+            suggestedMax: 1200,
+            stepSize: 100
+          }
+        }]
+      };
+
+    let massPopChart = new Chart(myChart, {
+        type: 'bar',
+        data:{
+            labels: [{% for item in all_water_today %}'{{ item.created_at_time | time:"H:i" }}',{% endfor %}],
+            datasets:[{
+                label: 'Woda w ml.',
+                data:[{% for item in all_water_today %}{{item.real_value}},{% endfor %}],
+                backgroundColor: 'rgba(102, 255, 255, 0.5)'
+            }]
+        },
+        options: {
+          scales: scales
+        }
+    })
+})
+</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1 class="mb-5" style="text-align: center;">Wykres Aktywności Fizycznej z ostatnich 14 dni ({{ first_date_of_14_days | date:"d/m" }} - {{ last_date_of_14_days | date:"d/m" }})</h1>
+<!-- Visuals -->
+<div class="row">
+  <div id="visuals-container" class="col-lg-8 mx-auto">
+    <canvas class="mb-3" width="300" height="200" id="myChart"></canvas>
+    <div id="chart2"></div>
+  </div>
+
+{% endblock %}
+
+{% block js %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+
+
+    let myChart = document.getElementById('myChart').getContext('2d');
+
+    // let massPopChart = new Chart(myChart, {
+    //     type: 'bar',
+    //     data:{
+    //         labels: [{% for item in all_activities %}'{{ item.date  }}',{% endfor %}],
+    //         datasets:[
+    //           {
+    //             label: 'Bieganie',
+    //             data:[{% for item in sum_BIE_activities_today %}{{ item }},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Jazda na rowerze',
+    //             data:[{% for item in sum_ROW_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Trening siłowy',
+    //             data:[{% for item in sum_TRE_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Piłka nożna',
+    //             data:[{% for item in sum_PIL_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Koszykówka',
+    //             data:[{% for item in sum_KOS_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Badminton',
+    //             data:[{% for item in sum_BAD_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Skakanka',
+    //             data:[{% for item in sum_SKA_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Joga',
+    //             data:[{% for item in sum_JOG_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Tenis',
+    //             data:[{% for item in sum_TEN_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           },
+    //           {
+    //             label: 'Boks',
+    //             data:[{% for item in sum_BOK_activities_today %}{{item}},{% endfor %}],
+    //             backgroundColor: 'rgba(102, 255, 255, 0.5)'
+    //           }]
+    //     }
+    // })
+
+    let scales = {
+        xAxes : [{
+          stacked: true,
+        }],
+        yAxes: [{
+          stacked: true,
+          ticks: {
+            suggestedMin: 0,
+            suggestedMax: 240,
+            stepSize: 20
+          }
+        }]
+      };
+
+    let massPopChart = new Chart(myChart, {
+        type: 'bar',
+        data:{
+            labels: [{% for item in date_last14 %}'{{ item | date:"d/m/y" }}',{% endfor %}],
+            datasets:[{
+                label: 'Aktywność fizyczna w minutach',
+                data:[{% for item in data %}{{item}},{% endfor %}],
+                backgroundColor: 'rgba(247, 62, 111, 0.5)'
+            }]
+        },
+        options: {
+          scales: scales
+        }
+    })
+})
+</script>
+{% endblock %}

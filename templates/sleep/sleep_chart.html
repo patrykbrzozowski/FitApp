@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<h1 class="mb-5" style="text-align: center">
+  Wykres ilości snu z ostatnich 14 dni ({{ first_date_of_14_days | date:"d/m" }}
+  - {{ last_date_of_14_days | date:"d/m" }})
+</h1>
+
+<!-- Visuals -->
+<div class="row">
+
+
+  <div id="visuals-container" class="col-lg-8 mx-auto">
+    <canvas class="mb-3" width="300" height="200" id="myChart"></canvas>
+  </div>
+  <!-- tutaj if -->
+  {% if sleep_avg < 6.5 %}
+  <div class="col-3">
+    <div class=" border border-primary rounded p-3">
+      <p class="font-weight-bold text-center text-capitalize" >PORADA</p>
+      <p>Musisz więcej spać, średnia powinna wynosić między 7 - 9 godzin snu dziennie!</p>
+      <p>Twoja średnia: {{ sleep_avg }}</p>
+    </div>
+  {% endif %}
+    
+  </div>
+
+</div>
+{% endblock %} {% block js %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+<script>
+  $(document).ready(function() {
+
+
+      let myChart = document.getElementById('myChart').getContext('2d');
+
+      let massPopChart = new Chart(myChart, {
+          type: 'line',
+          data:{
+              labels: [{% for item in date_last14 %}'{{ item | date:"d/m/y" }}',{% endfor %}],
+              datasets:[
+                {
+                  label: 'Cel',
+                  data:[{% for item in date_last14 %} 8,{% endfor %}],
+                  // backgroundColor: 'rgba(54, 185, 204, 0.5)'
+                  fill: false
+                },
+                {
+                  label: 'Ilość godzin snu',
+                  data:[{% for item in data %}{{item}},{% endfor %}],
+                  backgroundColor: 'rgba(54, 185, 204, 0.5)'
+                }
+              ]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                display: true
+              }],
+              yAxes: [{
+                display: true,
+                ticks: {
+                  suggestedMin: 1,
+                  suggestedMax: 12,
+                  stepSize: 1
+                }
+              }]
+            }
+          }
+      })
+  })
+</script>
+{% endblock %}

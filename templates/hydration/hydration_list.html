@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Upload File Section Form-->
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        {% if messages %}
+          <ul class="messages">
+          {% for message in messages %}
+            <p class=" ml-0 font-weight-bold {% if message.tags == 'error' %}text-danger {% elif message.tags == 'success' %}text-success {% endif %}">{{ message }} </p>
+          {% endfor %}
+          </ul>
+        {% endif %}
+        <h1>Nawodnienie {{ today }}</h1>
+        <ul>
+          {% for object in object_list %}
+            <li>
+                <a href="{% url 'hydration:water_detail' object.pk %}">
+              
+                  {{ object.created_at_time | time:"H:i" }} - {{ object.get_value_display }}
+                  
+                </a>
+            </li>
+          {% empty %}
+            <li>Nie dodano jeszcze dzisiaj żadnego napoju.</li>
+          {% endfor %}
+        </ul>
+        
+      </div>
+    </div>
+{% endblock %}
