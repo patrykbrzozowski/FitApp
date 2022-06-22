@@ -10,10 +10,10 @@ class DateInput(forms.DateInput):
 class SleepForm(forms.ModelForm):
     class Meta:
         model = Sleep
-        fields = ['duration', 'date']
+        fields = ['duration_time', 'date']
         
     date = forms.DateField(widget=DateInput, initial=date.today(), label="Data")
-    duration = forms.FloatField(widget=forms.NumberInput(attrs={'placeholder': 'Podaj wartość w godzinach'}), label='Czas trwania')
+    duration_time = forms.FloatField(widget=forms.NumberInput(attrs={'placeholder': 'Podaj wartość w godzinach'}), label='Czas trwania')
 
 
     def is_valid(self):
